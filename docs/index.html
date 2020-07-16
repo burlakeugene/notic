@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Notifier</title>
+    <script>
+      const APP_CONFIG = JSON.parse(
+        '{"name":"Notifier","publicPath":"./","connection":{"REST":{"protocol":"http","host":"127.0.0.1","port":"8103"}}}'
+      );
+    </script>
+  </head>
+
+  <body>
+    <button data-notifier-type="loading-on">Loader on</button>
+    <button data-notifier-type="loading-off">Loader off</button>
+    <button
+      data-notifier-message="This is error"
+      data-notifier-type="error"
+    >
+      Add message
+    </button>
+    <button
+      data-notifier-message="This is success"
+      data-notifier-type="success"
+    >
+      Add message
+    </button>
+  <script type="text/javascript" src="./bundle.js"></script></body>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=UA-149749840-1"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-149749840-1');
+  </script>
+</html>
