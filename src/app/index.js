@@ -7,18 +7,25 @@ window.addEventListener('load', () => {
   buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
       let type = button.getAttribute('data-notifier-type'),
-        message = button.getAttribute('data-notifier-message');
-        console.log(message);
+        message = button.getAttribute('data-notifier-message'),
+        delay = button.getAttribute('data-notifier-delay');
       if (type === 'loading-on') {
-        notifier.loadingOn();
+        notifier.loadingOn(4000);
       } else if (type === 'loading-off') {
         notifier.loadingOff();
       } else {
-        notifier.addMessage({
+        let newMessage = {
           message,
-          type,
-        });
+          type
+        };
+        if(delay) newMessage.delay = delay;
+        notifier.addMessage(newMessage);
       }
     });
   });
+  document.querySelectorAll('[data-notifier-clear]').forEach((button) => {
+    button.addEventListener('click', () => {
+      notifier.clear();
+    });
+  })
 });

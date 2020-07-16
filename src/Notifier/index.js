@@ -69,6 +69,14 @@ export default class Notifier {
       }
     }
   }
+  clear(){
+    this.messages = {
+      queue: [],
+      current: false,
+    };
+    clearTimeout(this.delayHide);
+    this.setMessage(false);
+  }
   setType(type) {
     type = this.types[type] ? type : this.defaultType;
     this.rootDOM.classList.add('notifier__' + type);
@@ -103,16 +111,33 @@ export default class Notifier {
     }
   }
   addMessage(message) {
-    this.messages.queue.push(message);
-    this.checkForMessage();
+    if (message.type === 'loading') {
+      if (
+        (this.messages.current && this.messages.current.type === 'loading') ||
+        (this.messages.queue[0] && this.messages.queue[0].type === 'loading')
+      ) {
+        return;
+      }
+      this.messages.queue.unshift(message);
+      this.setMessage(false);
+    } else {
+      this.messages.queue.push(message);
+      this.checkForMessage();
+    }
+
+    console.log(this.messages.queue);
   }
-  loadingOn() {
-    this.setMessage({
+  loadingOn(delay = false) {
+    let obj = {
       type: 'loading',
       text: '',
-    });
+    };
+    if (delay) obj.delay = delay;
+    this.addMessage(obj);
   }
   loadingOff() {
+    let { current } = this.messages;
+    if (current && current.type !== 'loading') return;
     this.setMessage(false);
   }
 }
