@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
         message = button.getAttribute('data-notifier-message'),
         delay = button.getAttribute('data-notifier-delay');
       if (type === 'loading-on') {
-        notifier.loadingOn(4000);
+        notifier.loadingOn();
       } else if (type === 'loading-off') {
         notifier.loadingOff();
       } else {
