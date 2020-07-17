@@ -27,6 +27,7 @@ export default class Notifier {
     };
     this.rootDOM = null;
     this.messageDOM = null;
+    this.hideMessage = this.hideMessage.bind(this);
     this.init();
   }
   build() {
@@ -43,20 +44,20 @@ export default class Notifier {
     this.messageDOM.classList.add('notifier-message');
     this.messageDOM.innerHTML = '';
     this.rootDOM.appendChild(this.messageDOM);
-    this.rootDOM.addEventListener('click', this.hideMessage.bind(this));
+    this.rootDOM.addEventListener('click', this.hideMessage);
     document.body.appendChild(this.rootDOM);
   }
   destroy() {
     if (this.rootDOM) {
-      this.rootDOM.removeEventListener('click', this.hideMessage.bind(this));
+      this.rootDOM.removeEventListener('click', this.hideMessage);
       this.rootDOM.parentNode.removeChild(this.rootDOM);
-      this.rootDOM = null;
-      this.messageDOM = null;
     }
   }
   init() {
-    this.destroy();
-    this.build();
+    this.clear(() => {
+      this.destroy();
+      this.build();
+    });
   }
   hideMessage() {
     let current = this.messages.current;
@@ -69,13 +70,13 @@ export default class Notifier {
       }
     }
   }
-  clear(){
+  clear(callback){
     this.messages = {
       queue: [],
       current: false,
     };
     clearTimeout(this.delayHide);
-    this.setMessage(false);
+    this.setMessage(false, callback);
   }
   setType(type) {
     type = this.types[type] ? type : this.defaultType;
@@ -89,23 +90,27 @@ export default class Notifier {
     if (!message.type) message.type = this.defaultType;
     this.setMessage(message);
   }
-  setMessage(message) {
+  setMessage(message, callback) {
     if (message) {
-      this.messages.current = message;
-      this.removeAllTypes();
-      this.rootDOM.classList.add('notifier__visible');
-      this.setType(message.type);
-      this.messageDOM.innerHTML = message.message || '';
-      if (message.delay) {
-        this.delayHide = setTimeout(() => {
-          this.setMessage(false);
-        }, message.delay);
+      if(this.rootDOM){
+        this.messages.current = message;
+        this.removeAllTypes();
+        this.rootDOM.classList.add('notifier__visible');
+        this.setType(message.type);
+        this.messageDOM.innerHTML = message.message || '';
+        if (message.delay) {
+          this.delayHide = setTimeout(() => {
+            callback && callback();
+            this.setMessage(false);
+          }, message.delay);
+        }
       }
     } else {
       clearTimeout(this.delayHide);
       this.messages.current = false;
-      this.rootDOM.classList.remove('notifier__visible');
+      this.rootDOM && this.rootDOM.classList.remove('notifier__visible');
       setTimeout(() => {
+        callback && callback();
         this.checkForMessage();
       }, 300);
     }
@@ -124,8 +129,6 @@ export default class Notifier {
       this.messages.queue.push(message);
       this.checkForMessage();
     }
-
-    console.log(this.messages.queue);
   }
   loadingOn(delay = false) {
     let obj = {

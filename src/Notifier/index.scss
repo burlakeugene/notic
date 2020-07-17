@@ -16,6 +16,7 @@
   overflow: hidden;
   min-height: 36px;
   min-width: 36px;
+  transform: translateY(calc(100% + 10px));
   &-message {
     padding: 10px 10px 10px 40px;
     font-size: 16px;
@@ -91,6 +92,7 @@
   &__visible {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0);
   }
 }
 
