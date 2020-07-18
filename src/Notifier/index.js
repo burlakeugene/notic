@@ -83,11 +83,11 @@ export default class Notifier {
     this.rootDOM.classList.add('notifier__' + type);
   }
   checkForMessage() {
-    let isset = this.messages.current;
-    if (isset) return;
-    let message = this.messages.queue.shift();
+    let {current, queue} = this.messages;
+    if (current) return;
+    let message = this.messages.queue.pop();
     if (!message) return;
-    if (!message.type) message.type = this.defaultType;
+    message.type = message.type || this.defaultType;
     this.setMessage(message);
   }
   setMessage(message, callback) {
@@ -116,14 +116,16 @@ export default class Notifier {
     }
   }
   addMessage(message) {
+    let {queue, current} = this.messages,
+      lastIndex = queue.length - 1;
     if (message.type === 'loading') {
       if (
-        (this.messages.current && this.messages.current.type === 'loading') ||
-        (this.messages.queue[0] && this.messages.queue[0].type === 'loading')
+        (current && current.type === 'loading') ||
+        (queue[lastIndex] && queue[lastIndex].type === 'loading')
       ) {
         return;
       }
-      this.messages.queue.unshift(message);
+      this.messages.queue.push(message);
       this.setMessage(false);
     } else {
       this.messages.queue.push(message);

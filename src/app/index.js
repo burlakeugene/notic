@@ -4,6 +4,7 @@ import './styles.scss';
 window.addEventListener('load', () => {
   let notifier = new Notifier(),
     buttons = document.querySelectorAll('[data-notifier-type]');
+  window.n = notifier;
   buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
       let type = button.getAttribute('data-notifier-type'),
