@@ -1,7 +1,7 @@
 import './index.scss';
 
 export default class Notifier {
-  constructor(props) {
+  constructor(props = {}) {
     this.defaultType = 'info';
     this.types = {
       loading: {
@@ -22,8 +22,10 @@ export default class Notifier {
       },
     };
     this.messages = {
-      queue: [],
+      type: props.type || 'stack',
+      list: [],
       current: false,
+      backToListOnLoading: props.backToListOnLoading || false
     };
     this.rootDOM = null;
     this.messageDOM = null;
@@ -72,7 +74,8 @@ export default class Notifier {
   }
   clear(callback){
     this.messages = {
-      queue: [],
+      ...this.messages,
+      list: [],
       current: false,
     };
     clearTimeout(this.delayHide);
@@ -83,9 +86,10 @@ export default class Notifier {
     this.rootDOM.classList.add('notifier__' + type);
   }
   checkForMessage() {
-    let {current, queue} = this.messages;
+    let {current, list, type} = this.messages;
     if (current) return;
-    let message = this.messages.queue.pop();
+    let action = type === 'queue' ? 'shift' : 'pop',
+      message = list[action]();
     if (!message) return;
     message.type = message.type || this.defaultType;
     this.setMessage(message);
@@ -116,19 +120,23 @@ export default class Notifier {
     }
   }
   addMessage(message) {
-    let {queue, current} = this.messages,
-      lastIndex = queue.length - 1;
+    let {list, current, backToListOnLoading, type} = this.messages,
+      lastIndex = list.length - 1;
     if (message.type === 'loading') {
       if (
         (current && current.type === 'loading') ||
-        (queue[lastIndex] && queue[lastIndex].type === 'loading')
+        (list[lastIndex] && list[lastIndex].type === 'loading')
       ) {
         return;
       }
-      this.messages.queue.push(message);
+      let action = type === 'queue' ? 'unshift' : 'push';
+      if(backToListOnLoading){
+        list[action](current);
+      }
+      list[action](message);
       this.setMessage(false);
     } else {
-      this.messages.queue.push(message);
+      list.push(message);
       this.checkForMessage();
     }
   }

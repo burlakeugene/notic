@@ -2,7 +2,10 @@ import Notifier from '../package';
 import './styles.scss';
 
 window.addEventListener('load', () => {
-  let notifier = new Notifier(),
+  let notifier = new Notifier({
+    // type: 'queue',
+    // backToListOnLoading: true
+  }),
     buttons = document.querySelectorAll('[data-notifier-type]');
   window.n = notifier;
   buttons.forEach((button) => {
