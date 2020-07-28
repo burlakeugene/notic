@@ -1,5 +1,5 @@
 
-## Notifier
+## Notic
 
 Demo:
-[burlakeugene.github.io/notifier](https://burlakeugene.github.io/notifier/)
+[burlakeugene.github.io/notic](https://burlakeugene.github.io/notic/)

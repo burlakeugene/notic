@@ -1,35 +1,35 @@
-import Notifier from '../package';
+import Notic from '../package';
 import './styles.scss';
 
 window.addEventListener('load', () => {
-  let notifier = new Notifier({
-    // type: 'queue',
+  let notic = new Notic({
+    type: 'queue',
     // backToListOnLoading: true
   }),
-    buttons = document.querySelectorAll('[data-notifier-type]');
-  window.n = notifier;
+    buttons = document.querySelectorAll('[data-notic-type]');
+  window.n = notic;
   buttons.forEach((button) => {
     button.addEventListener('click', (e) => {
-      let type = button.getAttribute('data-notifier-type'),
-        message = button.getAttribute('data-notifier-message'),
-        delay = button.getAttribute('data-notifier-delay');
+      let type = button.getAttribute('data-notic-type'),
+        message = button.getAttribute('data-notic-message'),
+        delay = button.getAttribute('data-notic-delay');
       if (type === 'loading-on') {
-        notifier.loadingOn();
+        notic.loadingOn();
       } else if (type === 'loading-off') {
-        notifier.loadingOff();
+        notic.loadingOff();
       } else {
         let newMessage = {
           message,
           type
         };
         if(delay) newMessage.delay = delay;
-        notifier.addMessage(newMessage);
+        notic.addMessage(newMessage);
       }
     });
   });
-  document.querySelectorAll('[data-notifier-clear]').forEach((button) => {
+  document.querySelectorAll('[data-notic-clear]').forEach((button) => {
     button.addEventListener('click', () => {
-      notifier.clear();
+      notic.clear();
     });
   })
 });

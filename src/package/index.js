@@ -1,2 +1,2 @@
-import Notifier from '../Notifier';
-export default Notifier;
+import Notic from '../Notic';
+export default Notic;

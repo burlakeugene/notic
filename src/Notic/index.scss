@@ -1,4 +1,4 @@
-.notifier{
+.notic{
   &, & *{
     box-sizing: border-box;
   }
@@ -59,7 +59,7 @@
   &__loading {
     width: 38px;
     height: 38px;
-    .notifier-icon__loading {
+    .notic-icon__loading {
       transform: scale(1) translate(-50%, -50%);
       opacity: 1;
       visibility: visible;
@@ -69,21 +69,21 @@
     }
   }
   &__success {
-    .notifier-icon__success {
+    .notic-icon__success {
       transform: scale(1);
       opacity: 1;
       visibility: visible;
     }
   }
   &__error {
-    .notifier-icon__error {
+    .notic-icon__error {
       transform: scale(1);
       opacity: 1;
       visibility: visible;
     }
   }
   &__info {
-    .notifier-icon__info {
+    .notic-icon__info {
       transform: scale(1);
       opacity: 1;
       visibility: visible;

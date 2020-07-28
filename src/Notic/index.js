@@ -1,6 +1,6 @@
 import './index.scss';
 
-export default class Notifier {
+export default class Notic {
   constructor(props = {}) {
     this.defaultType = 'info';
     this.types = {
@@ -25,7 +25,7 @@ export default class Notifier {
       type: props.type || 'stack',
       list: [],
       current: false,
-      backToListOnLoading: props.backToListOnLoading || false
+      backToListOnLoading: props.backToListOnLoading || false,
     };
     this.rootDOM = null;
     this.messageDOM = null;
@@ -34,16 +34,16 @@ export default class Notifier {
   }
   build() {
     this.rootDOM = document.createElement('div');
-    this.rootDOM.classList.add('notifier');
+    this.rootDOM.classList.add('notic');
     for (let type in this.types) {
       let icon = document.createElement('div');
-      icon.classList.add('notifier-icon');
-      icon.classList.add('notifier-icon__' + type);
+      icon.classList.add('notic-icon');
+      icon.classList.add('notic-icon__' + type);
       icon.innerHTML = this.types[type].icon;
       this.rootDOM.appendChild(icon);
     }
     this.messageDOM = document.createElement('div');
-    this.messageDOM.classList.add('notifier-message');
+    this.messageDOM.classList.add('notic-message');
     this.messageDOM.innerHTML = '';
     this.rootDOM.appendChild(this.messageDOM);
     this.rootDOM.addEventListener('click', this.hideMessage);
@@ -68,11 +68,11 @@ export default class Notifier {
   removeAllTypes() {
     if (this.rootDOM) {
       for (let type in this.types) {
-        this.rootDOM.classList.remove('notifier__' + type);
+        this.rootDOM.classList.remove('notic__' + type);
       }
     }
   }
-  clear(callback){
+  clear(callback) {
     this.messages = {
       ...this.messages,
       list: [],
@@ -83,10 +83,10 @@ export default class Notifier {
   }
   setType(type) {
     type = this.types[type] ? type : this.defaultType;
-    this.rootDOM.classList.add('notifier__' + type);
+    this.rootDOM.classList.add('notic__' + type);
   }
   checkForMessage() {
-    let {current, list, type} = this.messages;
+    let { current, list, type } = this.messages;
     if (current) return;
     let action = type === 'queue' ? 'shift' : 'pop',
       message = list[action]();
@@ -96,10 +96,11 @@ export default class Notifier {
   }
   setMessage(message, callback) {
     if (message) {
-      if(this.rootDOM){
+      if (this.rootDOM) {
         this.messages.current = message;
+        if(this.messages.current.onShow) this.messages.current.onShow(this);
         this.removeAllTypes();
-        this.rootDOM.classList.add('notifier__visible');
+        this.rootDOM.classList.add('notic__visible');
         this.setType(message.type);
         this.messageDOM.innerHTML = message.message || '';
         if (message.delay) {
@@ -111,8 +112,9 @@ export default class Notifier {
       }
     } else {
       clearTimeout(this.delayHide);
+      if(this.messages.current.onHide) this.messages.current.onHide(this);
       this.messages.current = false;
-      this.rootDOM && this.rootDOM.classList.remove('notifier__visible');
+      this.rootDOM && this.rootDOM.classList.remove('notic__visible');
       setTimeout(() => {
         callback && callback();
         this.checkForMessage();
@@ -120,7 +122,7 @@ export default class Notifier {
     }
   }
   addMessage(message) {
-    let {list, current, backToListOnLoading, type} = this.messages,
+    let { list, current, backToListOnLoading, type } = this.messages,
       lastIndex = list.length - 1;
     if (message.type === 'loading') {
       if (
@@ -130,7 +132,7 @@ export default class Notifier {
         return;
       }
       let action = type === 'queue' ? 'unshift' : 'push';
-      if(backToListOnLoading){
+      if (backToListOnLoading) {
         list[action](current);
       }
       list[action](message);

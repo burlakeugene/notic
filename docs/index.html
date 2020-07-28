@@ -4,31 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Notifier</title>
+    <title>Notic</title>
     <script>
       const APP_CONFIG = JSON.parse(
-        '{"name":"Notifier","publicPath":"./","connection":{"REST":{"protocol":"http","host":"127.0.0.1","port":"8103"}}}'
+        '{"name":"Notic","publicPath":"./","connection":{"REST":{"protocol":"http","host":"127.0.0.1","port":"8103"}}}'
       );
     </script>
   </head>
 
   <body>
-    <button data-notifier-type="loading-on">Loader on</button>
-    <button data-notifier-type="loading-off">Loader off</button>
+    <button data-notic-type="loading-on">Loader on</button>
+    <button data-notic-type="loading-off">Loader off</button>
     <button
-      data-notifier-message="This is error"
-      data-notifier-type="error"
-      data-notifier-delay="3000"
+      data-notic-message="This is error"
+      data-notic-type="error"
+      data-notic-delay="3000"
     >
       Add message, 3s delay
     </button>
     <button
-      data-notifier-message="This is success"
-      data-notifier-type="success"
+      data-notic-message="This is success"
+      data-notic-type="success"
     >
       Add message
     </button>
-    <button data-notifier-clear>Clear queue</button>
+    <button data-notic-clear>Clear queue</button>
   <script type="text/javascript" src="./bundle.js"></script></body>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script

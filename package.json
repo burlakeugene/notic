@@ -1,18 +1,18 @@
 {
-  "name": "notifier",
+  "name": "notic",
   "version": "1.0.00",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/burlakeugene/notifier.git"
+    "url": "git+https://github.com/burlakeugene/notic.git"
   },
   "keywords": [
     "mask",
     "input"
   ],
   "bugs": {
-    "url": "https://github.com/burlakeugene/notifier/issues"
+    "url": "https://github.com/burlakeugene/notic/issues"
   },
-  "homepage": "https://burlakeugene.github.io/notifier/",
+  "homepage": "https://burlakeugene.github.io/notic/",
   "main": "package/bundle.js",
   "author": "Eugene Burlak <burlakeugene@gmail.com>",
   "license": "MIT",
