@@ -48,9 +48,6 @@ export default class Notic {
     this.rootDOM.appendChild(this.messageDOM);
     this.rootDOM.addEventListener('click', this.hideMessage);
     document.body.appendChild(this.rootDOM);
-    setTimeout(() => {
-      this.checkForMessage();
-    }, 0);
   }
   destroy() {
     if (this.rootDOM) {
@@ -90,7 +87,7 @@ export default class Notic {
   }
   checkForMessage() {
     let { current, list, type } = this.messages;
-    if (current) return;
+    if (current || !this.rootDOM) return;
     let action = type === 'queue' ? 'shift' : 'pop',
       message = list[action]();
     if (!message) return;
@@ -120,7 +117,9 @@ export default class Notic {
       this.rootDOM && this.rootDOM.classList.remove('notic__visible');
       setTimeout(() => {
         callback && callback();
-        this.checkForMessage();
+        setTimeout(() => {
+          this.checkForMessage();
+        }, 0);
       }, 300);
     }
   }
