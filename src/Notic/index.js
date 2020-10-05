@@ -48,6 +48,9 @@ export default class Notic {
     this.rootDOM.appendChild(this.messageDOM);
     this.rootDOM.addEventListener('click', this.hideMessage);
     document.body.appendChild(this.rootDOM);
+    setTimeout(() => {
+      this.checkForMessage();
+    }, 0);
   }
   destroy() {
     if (this.rootDOM) {
