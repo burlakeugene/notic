@@ -1,7 +1,23 @@
 import './index.scss';
 
+const getStyle = function (elem, rule) {
+  var result = '';
+  if (document.defaultView && document.defaultView.getComputedStyle) {
+    result = document.defaultView
+      .getComputedStyle(elem, '')
+      .getPropertyValue(rule);
+  } else if (elem.currentStyle) {
+    rule = rule.replace(/\-(\w)/g, function (strMatch, p1) {
+      return p1.toUpperCase();
+    });
+    result = elem.currentStyle[rule];
+  }
+  return result;
+};
+
 export default class Notic {
   constructor(props = {}) {
+    this.animationTime = props.animationTime || 300;
     this.types = {
       default: 'info',
       list: {
@@ -26,16 +42,27 @@ export default class Notic {
     this.state = {
       loading: false,
       messages: {
-        visible: false,
         list: [],
       },
     };
     this.rootDOM = null;
     this.init();
   }
+  setTransition(elem, time = this.animationTime) {
+    if (!elem) return;
+    elem.style.transition = 'all ' + time / 1000 + 's';
+    elem.style.webkitTransition = 'all ' + time / 1000 + 's';
+  }
   build() {
+    let { types } = this;
     this.rootDOM = document.createElement('div');
     this.rootDOM.classList.add('notic');
+    this.setTransition(this.rootDOM);
+    this.loadingDom = document.createElement('div');
+    this.loadingDom.classList.add('notic-loading');
+    this.loadingDom.innerHTML = types.list['loading'].icon;
+    this.setTransition(this.loadingDom);
+    this.rootDOM.appendChild(this.loadingDom);
     document.body.appendChild(this.rootDOM);
   }
   destroy() {
@@ -61,7 +88,6 @@ export default class Notic {
       messageDomInnerIcon = document.createElement('div'),
       messageDomInnerText = document.createElement('div');
     message.type = types.list[message.type] ? message.type : types.default;
-    message.visible = false;
     message.id = +new Date();
     messageDom.classList.add('notic-message');
     messageDom.classList.add('notic-message__' + message.type);
@@ -73,10 +99,14 @@ export default class Notic {
     messageDomInner.appendChild(messageDomInnerIcon);
     messageDomInner.appendChild(messageDomInnerText);
     messageDom.appendChild(messageDomInner);
+    this.setTransition(messageDom);
     message.dom = messageDom;
     rootDOM.appendChild(message.dom);
     message.height = 0;
-    message.visibleHeight = messageDomInner.clientHeight;
+    message.visibleHeight =
+      parseFloat(messageDomInner.clientHeight) +
+      parseFloat(getStyle(messageDomInner, 'margin-top').replace('px', '')) +
+      parseFloat(getStyle(messageDomInner, 'margin-bottom').replace('px', ''));
     message.dom.style.height = message.height;
     message.dom.onclick = () => {
       this.hideMessage(message);
@@ -87,7 +117,6 @@ export default class Notic {
     setTimeout(() => {
       message.height = message.visibleHeight;
       message.dom.style.height = message.height + 'px';
-      message.visible = true;
       message.dom.classList.add('notic-message__visible');
       if (message.delay) {
         message.timeout = setTimeout(() => {
@@ -96,17 +125,22 @@ export default class Notic {
       }
     }, 50);
   }
+  hideMessages() {
+    let { messages } = this.state;
+    messages.list.forEach((message, index) => {
+      setTimeout(() => {
+        this.hideMessage(message);
+      }, index * this.animationTime);
+    });
+  }
   hideMessage(message) {
+    if(!message.dom) return;
     clearTimeout(message.timeout);
     message.dom.classList.remove('notic-message__visible');
     message.dom.style.height = 0;
-    message.dom.ontransitionend = () => {
-      if (message.dom.style.height === '0px') {
-        if (!message.visible) return;
-        message.visible = false;
-        this.removeMessage(message);
-      }
-    };
+    setTimeout(() => {
+      this.removeMessage(message);
+    }, this.animationTime);
   }
   removeMessage(message) {
     let { messages } = this.state,
@@ -114,32 +148,29 @@ export default class Notic {
         return item.id === message.id;
       });
     messages.list.splice(index, 1);
-    message.dom.parentNode.removeChild(message.dom);
+    message.dom = null;
+    message.dom && message.dom.parentNode.removeChild(message.dom);
   }
   loadingOn() {
-    let { types } = this;
     if (this.state.loading) return;
-    this.loadingDom = document.createElement('div');
-    this.loadingDom.classList.add('notic-loading');
-    this.loadingDom.innerHTML = types.list['loading'].icon;
-    this.rootDOM.appendChild(this.loadingDom);
+    clearTimeout(this.loaderTimeout);
     this.state.loading = true;
     this.rootDOM.classList.add('notic__loading');
-    this.rootDOM.ontransitionend = () => {
+    this.loaderTimeout = setTimeout(() => {
       this.loadingDom.classList.add('notic-loading__show');
-    };
+    }, this.animationTime);
   }
   loadingOff() {
+    if (!this.state.loading) return;
+    clearTimeout(this.loaderTimeout);
     this.state.loading = false;
     this.loadingDom.classList.remove('notic-loading__show');
-    this.loadingDom.ontransitionend = () => {
+    this.loaderTimeout = setTimeout(() => {
       this.rootDOM.classList.remove('notic__loading');
-    };
-    this.rootDOM.ontransitionend = () => {
-      this.loadingDom && this.loadingDom.parentNode.removeChild(this.loadingDom);
-    };
+    }, this.animationTime);
   }
   clear() {
-    
+    this.loadingOff();
+    this.hideMessages();
   }
 }
