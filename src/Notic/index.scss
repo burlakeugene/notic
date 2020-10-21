@@ -8,10 +8,10 @@
   bottom: 0px;
   right: 0px;
   padding-bottom: 5px;
-  &__loading{
+  &__loading {
     padding-right: 50px;
   }
-  &-loading{
+  &-loading {
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -21,10 +21,10 @@
     background-color: #fff;
     padding: 5px;
     transform: translateY(calc(100% + 10px));
-    &__show{
+    &__show {
       transform: translateY(0);
     }
-    svg{
+    svg {
       fill: transparent;
       stroke-width: 10px;
       stroke: #27ca5d;
@@ -38,11 +38,7 @@
     margin-right: 10px;
     border-radius: 20px;
     overflow: hidden;
-    &__visible {
-      // margin-top: 10px;
-    }
     &-inner {
-      padding: 10px 10px 10px 40px;
       position: relative;
       min-height: 40px;
       min-width: 40px;
@@ -50,6 +46,9 @@
       border-radius: 20px;
       margin-top: 5px;
       margin-bottom: 5px;
+      padding: 10px 10px 10px 40px;
+      display: inline-block;
+      width: 100%;
     }
     &-icon {
       width: 30px;
@@ -75,6 +74,14 @@
     &__error {
       svg {
         fill: #e74b43;
+      }
+    }
+    &__empty {
+      text-align: right;
+      .notic-message-inner{
+        width: 40px;
+        height: 40px;
+        padding: 10px;
       }
     }
   }

@@ -91,6 +91,7 @@ export default class Notic {
     message.id = +new Date();
     messageDom.classList.add('notic-message');
     messageDom.classList.add('notic-message__' + message.type);
+    if (!message.message) messageDom.classList.add('notic-message__empty');
     messageDomInner.classList.add('notic-message-inner');
     messageDomInnerIcon.classList.add('notic-message-icon');
     messageDomInnerText.classList.add('notic-message-text');
@@ -134,7 +135,7 @@ export default class Notic {
     });
   }
   hideMessage(message) {
-    if(!message.dom) return;
+    if (!message.dom) return;
     clearTimeout(message.timeout);
     message.dom.classList.remove('notic-message__visible');
     message.dom.style.height = 0;
@@ -148,8 +149,8 @@ export default class Notic {
         return item.id === message.id;
       });
     messages.list.splice(index, 1);
-    message.dom = null;
     message.dom && message.dom.parentNode.removeChild(message.dom);
+    message.dom = null;
   }
   loadingOn() {
     if (this.state.loading) return;
