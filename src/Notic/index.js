@@ -110,6 +110,7 @@ export default class Notic {
       parseFloat(getStyle(messageDomInner, 'margin-bottom').replace('px', ''));
     message.dom.style.height = message.height;
     message.dom.onclick = () => {
+      message.onClick && message.onClick(message);
       this.hideMessage(message);
     };
     this.showMessage(message);

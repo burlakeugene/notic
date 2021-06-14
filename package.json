@@ -1,6 +1,6 @@
 {
   "name": "notic",
-  "version": "2.0.02",
+  "version": "2.0.03",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/burlakeugene/notic.git"
@@ -21,7 +21,7 @@
   "license": "MIT",
   "description": "",
   "scripts": {
-    "dev": "CONFIG_NAME='dev' webpack-dev-server --mode development --port 3002 --open --hot",
+    "dev": "CONFIG_NAME='dev' webpack-dev-server --mode development --port 3001 --open --hot",
     "build_app": "CONFIG_NAME='prod' webpack --mode production",
     "build_package": "CONFIG_NAME='prod' BUILD_TYPE='package' webpack --mode production"
   },
