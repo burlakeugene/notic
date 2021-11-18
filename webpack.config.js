@@ -15,76 +15,84 @@ function getJSONConfig() {
 
 const JSON_CONFIG = getJSONConfig();
 const isDevelopment = process.env.WEBPACK_DEV_SERVER === 'true';
-const buildType = process.env.BUILD_TYPE || 'app';
+const buildType = process.env.BUILD_TYPE || 'umd';
+const buildTarget = process.env.BUILD_TARGET || 'app';
 
 module.exports = {
   entry:
-    buildType === 'package' ? './src/package/index.js' : './src/app/index.js',
+    buildTarget === 'package' ? './src/package/index.js' : './src/app/index.js',
   output: {
-    path: path.join(ROOT_DIR, buildType === 'package' ? '/package' : '/docs'),
+    path: path.join(
+      ROOT_DIR,
+      buildTarget === 'package'
+        ? buildType === 'umd'
+          ? '/dist'
+          : '/package'
+        : '/docs'
+    ),
     publicPath: JSON_CONFIG.publicPath,
     filename: 'bundle.js',
-    libraryTarget: buildType === 'app' ? 'umd' : 'commonjs2'
+    libraryTarget: buildType,
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
           },
           {
             loader: 'postcss-loader',
             options: {
               plugins: [autoprefixer()],
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              includePaths: ['absolute/path/a', 'absolute/path/b']
-            }
-          }
-        ]
+              includePaths: ['absolute/path/a', 'absolute/path/b'],
+            },
+          },
+        ],
       },
       {
         test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
         loader: 'file-loader?name=[name].[ext]',
         options: {
-          outputPath: 'media'
-        }
-      }
-    ]
+          outputPath: 'media',
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
-    historyApiFallback: true
-  }
+    historyApiFallback: true,
+  },
 };
 
-if (buildType === 'app') {
+if (buildTarget === 'app') {
   module.exports.plugins = [
     new HtmlWebpackPlugin({
       template: './src/app/index.html',
       APP_CONFIG: JSON.stringify(JSON_CONFIG),
       title: JSON_CONFIG.name,
-      rootUrl: JSON_CONFIG.publicPath
-    })
+      rootUrl: JSON_CONFIG.publicPath,
+    }),
   ];
 }
