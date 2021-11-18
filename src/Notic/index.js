@@ -43,7 +43,7 @@ export default class Notic {
           icon: icons.error,
         },
         info: {
-          icon: icons.success,
+          icon: icons.info,
         },
       },
     };
