@@ -26,6 +26,14 @@ const icons = {
 export default class Notic {
   constructor(props = {}) {
     this.animationTime = props.animationTime || 300;
+    this.classNames = {
+      container: ['notic']
+    };
+    if(props.classNames){
+      if(props.classNames.container){
+        this.classNames.container = [...this.classNames.container, ...props.classNames.container];
+      }
+    }
     this.close = props.close || {
       button: false,
       areaClick: true,
@@ -62,9 +70,11 @@ export default class Notic {
     elem.style.webkitTransition = 'all ' + time / 1000 + 's';
   }
   build() {
-    let { types } = this;
+    let { types, classNames } = this;
     this.rootDOM = document.createElement('div');
-    this.rootDOM.classList.add('notic');
+    classNames.container.forEach((className) => {
+      this.rootDOM.classList.add(className);
+    });
     this.setTransition(this.rootDOM);
     this.loadingDom = document.createElement('div');
     this.loadingDom.classList.add('notic-loading');

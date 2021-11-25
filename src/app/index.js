@@ -5,6 +5,9 @@ window.addEventListener('load', () => {
   let notic = new Notic({
     close: {
       button: true
+    },
+    classNames: {
+      container: ['my-notic']
     }
   }),
     buttons = document.querySelectorAll('[data-notic-message]');
