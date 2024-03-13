@@ -69,5 +69,5 @@ module.exports = {
             rootUrl: '/',
           }),
         ]
-      : [new CleanWebpackPlugin()],
+      : [new CleanWebpackPlugin(), new MiniCssExtractPlugin()],
 };
