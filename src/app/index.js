@@ -3,12 +3,13 @@ import './styles.scss';
 
 window.addEventListener('load', () => {
   let notic = new Notic({
-    close: {
-      button: true,
-      
-    }
-  }),
-    buttons = document.querySelectorAll('[data-notic-message], [data-notic-type]');
+      close: {
+        button: true,
+      },
+    }),
+    buttons = document.querySelectorAll(
+      '[data-notic-message], [data-notic-type]'
+    );
   window.n = notic;
   console.log(window.n);
   buttons.forEach((button) => {

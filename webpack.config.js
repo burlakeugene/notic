@@ -10,7 +10,26 @@ const ROOT_DIR = __dirname;
 const buildType = process.env.BUILD_TYPE || 'umd';
 const buildTarget = process.env.BUILD_TARGET || 'app';
 
+const plugins = [
+  new CleanWebpackPlugin(),
+  new MiniCssExtractPlugin({
+    filename: 'bundle.css',
+  }),
+];
+
+if (buildTarget == 'app') {
+  plugins.push(
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: './src/app/index.html',
+      title: 'Notic',
+      rootUrl: '/',
+    })
+  );
+}
+
 module.exports = {
+  plugins,
   entry:
     buildTarget === 'package'
       ? './src/package/index.js'
@@ -42,7 +61,7 @@ module.exports = {
       {
         test: /\.(s[ac]|c)ss$/i,
         use: [
-          ...(buildTarget === 'app' ? [MiniCssExtractPlugin.loader] : []),
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader',
           {
@@ -64,17 +83,4 @@ module.exports = {
     hot: true,
     port: 8080,
   },
-  plugins:
-    buildTarget === 'app'
-      ? [
-          new CleanWebpackPlugin(),
-          new MiniCssExtractPlugin(),
-          new webpack.HotModuleReplacementPlugin(),
-          new HtmlWebpackPlugin({
-            template: './src/app/index.html',
-            title: 'Notic',
-            rootUrl: '/',
-          }),
-        ]
-      : [new CleanWebpackPlugin()],
 };
