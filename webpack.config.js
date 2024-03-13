@@ -42,7 +42,7 @@ module.exports = {
       {
         test: /\.(s[ac]|c)ss$/i,
         use: [
-          MiniCssExtractPlugin.loader,
+          ...(buildTarget === 'app' ? [MiniCssExtractPlugin.loader] : []),
           'css-loader',
           'sass-loader',
           {
@@ -76,5 +76,5 @@ module.exports = {
             rootUrl: '/',
           }),
         ]
-      : [new CleanWebpackPlugin(), new MiniCssExtractPlugin()],
+      : [new CleanWebpackPlugin()],
 };
