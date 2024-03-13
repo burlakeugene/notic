@@ -29,22 +29,25 @@ const icons = {
 
 export default class Notic {
   constructor(props = {}) {
-    this.animationTime = props.animationTime || 300;
+    this.animation = props.animation || { time: 300 };
+
     this.classNames = {
       container: ['notic'],
     };
-    if (props.classNames) {
-      if (props.classNames.container) {
-        this.classNames.container = [
-          ...this.classNames.container,
-          ...props.classNames.container,
-        ];
-      }
-    }
+    Object.keys(props.classNames || {}).forEach((key) => {
+      this.classNames[key] = [
+        ...(this.classNames[key] || []),
+        ...props.classNames[key],
+      ];
+    });
+
+    console.log(this.classNames);
+
     this.close = props.close || {
-      button: false,
+      button: true,
       area: true,
     };
+
     this.types = {
       default: 'info',
       list: {
@@ -62,16 +65,19 @@ export default class Notic {
         },
       },
     };
+
     this.state = {
       loading: false,
       messages: {
         list: [],
       },
     };
+
     this.rootDOM = null;
+
     this.init();
   }
-  setTransition(elem, time = this.animationTime) {
+  setTransition(elem, time = this.animation.time) {
     if (!elem) return;
     elem.style.transition = 'all ' + time / 1000 + 's';
     elem.style.webkitTransition = 'all ' + time / 1000 + 's';
@@ -170,7 +176,7 @@ export default class Notic {
     messages.list.forEach((message, index) => {
       setTimeout(() => {
         this.hideMessage(message);
-      }, index * this.animationTime);
+      }, index * this.animation.time);
     });
   }
   hideMessage(message) {
@@ -180,7 +186,7 @@ export default class Notic {
     message.dom.style.height = 0;
     setTimeout(() => {
       this.removeMessage(message);
-    }, this.animationTime);
+    }, this.animation.time);
   }
   removeMessage(message) {
     let { messages } = this.state,
@@ -198,7 +204,7 @@ export default class Notic {
     this.rootDOM.classList.add('notic--loading');
     this.loaderTimeout = setTimeout(() => {
       this.loadingDom.classList.add('notic__loading--show');
-    }, this.animationTime);
+    }, this.animation.time);
   }
   loadingOff() {
     if (!this.state.loading) return;
@@ -207,7 +213,7 @@ export default class Notic {
     this.loadingDom.classList.remove('notic__loading--show');
     this.loaderTimeout = setTimeout(() => {
       this.rootDOM.classList.remove('notic--loading');
-    }, this.animationTime);
+    }, this.animation.time);
   }
   clear() {
     this.loadingOff();
