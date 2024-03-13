@@ -1,20 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Muli:400,700,900&display=swap&subset=latin-ext');
 
-$theme: #7bdcb5;
-$white: #fff;
-$black: #000;
+:root{
+  --theme: #1c1b2a;
+  --white: #fff;
+  ---black: #000;
+}
 
 * {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: 'Muli';
-  font-weight: 400;
-  background-color: $theme;
-  height: 100%;
-}
 
 body,
 html {
@@ -22,5 +17,33 @@ html {
 }
 
 body {
-  background-color: #eee;
+  margin: 0;
+  font-family: 'Muli';
+  font-weight: 400;
+  background-color: var(--theme);
+}
+
+div.buttons{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+button{
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background: #0088cc;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+button[data-notic-type="error"]{
+  background: #e74b43;
+}
+[data-notic-type="success"]{
+  background: #27ca5d;
 }

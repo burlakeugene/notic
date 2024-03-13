@@ -13,20 +13,14 @@
   </head>
 
   <body>
-    <button data-notic-type="loading-on">Loader on</button>
-    <button data-notic-type="loading-off">Loader off</button>
-    <button
-      data-notic-message="С 15.11.2021, у нас новый офис по адресу - г. Симферополь, ул. Ялтинская 73 'Г'"
-    >
-      Add message, 3s delay
-    </button>
-    <button
-      data-notic-message="This is success dsa dsa dsd as321 123 213 213 213213213 23123213232 32"
-      data-notic-type="success"
-    >
-      Add message
-    </button>
-    <button data-notic-clear>Clear queue</button>
+    <div class="buttons">
+      <button data-notic-type="loading-on">Loader on</button>
+      <button data-notic-type="loading-off">Loader off</button>
+      <button data-notic-message="Info message" data-notic-delay="3000">Add info message, hide after 3s</button>
+        <button data-notic-message="Error mesage" data-notic-type="error">Add error message</button>
+      <button data-notic-message="Success mesage" data-notic-type="success">Add success message</button>
+      <button data-notic-clear>Clear queue</button>
+    </div>
   </body>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script

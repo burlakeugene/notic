@@ -2,15 +2,8 @@ import Notic from '../package';
 import './styles.scss';
 
 window.addEventListener('load', () => {
-  let notic = new Notic({
-    close: {
-      button: true
-    },
-    classNames: {
-      container: ['my-notic']
-    }
-  }),
-    buttons = document.querySelectorAll('[data-notic-message]');
+  let notic = new Notic(),
+    buttons = document.querySelectorAll('[data-notic-message], [data-notic-type]');
   window.n = notic;
   console.log(window.n);
   buttons.forEach((button) => {
@@ -25,9 +18,9 @@ window.addEventListener('load', () => {
       } else {
         let newMessage = {
           message,
-          type
+          type,
         };
-        if(delay) newMessage.delay = delay;
+        if (delay) newMessage.delay = delay;
         notic.addMessage(newMessage);
       }
     });
@@ -36,5 +29,5 @@ window.addEventListener('load', () => {
     button.addEventListener('click', () => {
       notic.clear();
     });
-  })
+  });
 });
