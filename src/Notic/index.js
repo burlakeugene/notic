@@ -41,8 +41,6 @@ export default class Notic {
       ];
     });
 
-    console.log(this.classNames);
-
     this.close = props.close || {
       button: true,
       area: true,

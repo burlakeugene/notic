@@ -9,7 +9,6 @@ Usage:
 npm i notic
 
 import Notic from 'notic';
-import 'notic/dist/bundle.css';
 
 const Notification = new Notic({
   close: {

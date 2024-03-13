@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -10,12 +10,7 @@ const ROOT_DIR = __dirname;
 const buildType = process.env.BUILD_TYPE || 'umd';
 const buildTarget = process.env.BUILD_TARGET || 'app';
 
-const plugins = [
-  new CleanWebpackPlugin(),
-  new MiniCssExtractPlugin({
-    filename: 'bundle.css',
-  }),
-];
+const plugins = [new CleanWebpackPlugin()];
 
 if (buildTarget == 'app') {
   plugins.push(
@@ -61,7 +56,7 @@ module.exports = {
       {
         test: /\.(s[ac]|c)ss$/i,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           'sass-loader',
           {
