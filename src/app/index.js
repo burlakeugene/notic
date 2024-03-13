@@ -2,7 +2,12 @@ import Notic from '../package';
 import './styles.scss';
 
 window.addEventListener('load', () => {
-  let notic = new Notic(),
+  let notic = new Notic({
+    close: {
+      button: true,
+      
+    }
+  }),
     buttons = document.querySelectorAll('[data-notic-message], [data-notic-type]');
   window.n = notic;
   console.log(window.n);

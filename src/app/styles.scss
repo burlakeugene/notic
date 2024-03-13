@@ -21,14 +21,17 @@ body {
   font-family: 'Muli';
   font-weight: 400;
   background-color: var(--theme);
+  display: flex;
+  align-items: center;
 }
 
-div.buttons{
-  height: 100%;
+.buttons{
+  width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 button{
